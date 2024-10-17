@@ -6,7 +6,7 @@ from django.db import models
 
 class AccessRequirement(models.TextChoices):
     ANYONE = "any", "Anyone"
-    EMAIL = "email_required", "Email required"
+    EMAIL_REQUIRED = "email", "Email required"
 
 
 class PublishStatus(models.TextChoices):
@@ -15,14 +15,18 @@ class PublishStatus(models.TextChoices):
     DRAFT = "draft", "Draft"
 
 
+def handle_upload(instance, filename):
+    return f'{filename}'
+
+
 class Course(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField(blank=True, null=True)
-    # image
+    image = models.ImageField(upload_to=handle_upload, blank=True, null=True)
     access = models.CharField(
-        max_length=10,
+        max_length=5,
         choices=AccessRequirement.choices,
-        default=AccessRequirement.EMAIL
+        default=AccessRequirement.EMAIL_REQUIRED
     )
     status = models.CharField(
         max_length=10,
