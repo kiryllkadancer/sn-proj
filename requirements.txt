@@ -1,5 +1,5 @@
 Django>=5.1,<5.2
 pillow
 mysqlclient
-cloudinary
+cloudinary~=1.41.0
 python-decouple
