@@ -5,6 +5,7 @@ from cloudinary.models import CloudinaryField
 # Create your models here.
 helpers.cloudinary_init()
 
+
 class AccessRequirement(models.TextChoices):
     ANYONE = "any", "Anyone"
     EMAIL_REQUIRED = "email", "Email required"
@@ -39,3 +40,24 @@ class Course(models.Model):
     @property
     def is_published(self):
         return self.status == PublishStatus.PUBLISHED
+
+    @property
+    def image_admin_url(self):
+        if not self.image:
+            return ''
+        image_options = {
+            'width': 200
+        }
+        url = self.image.build_url(**image_options)
+        return url
+
+    def get_image_thumbnail(self, as_html=False, width=750):
+        if not self.image:
+            return ''
+        image_options = {
+            'width': width
+        }
+        if as_html:
+            return self.image.image(**image_options)
+        url = self.image.build_url(**image_options)
+        return url
