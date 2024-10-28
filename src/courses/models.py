@@ -104,27 +104,6 @@ class Course(models.Model):
     def is_published(self):
         return self.status == PublishStatus.PUBLISHED
 
-    @property
-    def image_admin_url(self):
-        if not self.image:
-            return ''
-        image_options = {
-            'width': 200
-        }
-        url = self.image.build_url(**image_options)
-        return url
-
-    def get_image_thumbnail(self, as_html=False, width=750):
-        if not self.image:
-            return ''
-        image_options = {
-            'width': width
-        }
-        if as_html:
-            return self.image.image(**image_options)
-        url = self.image.build_url(**image_options)
-        return url
-
 
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -136,6 +115,7 @@ class Lesson(models.Model):
                                 blank=True, null=True)
     video = CloudinaryField('video', public_id_prefix=get_public_id_prefix, display_name=get_display_name,
                             tags=['video', 'lesson'],
+                            type='private',
                             blank=True, null=True, resource_type='video')
     order = models.IntegerField(default=0)
     can_preview = models.BooleanField(default=False,
