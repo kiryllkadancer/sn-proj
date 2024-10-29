@@ -12,9 +12,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from decouple import config  # os.environ.get()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOCAL_CDN = BASE_DIR.parent / 'local-cdn'
+TEMPLATE_DIR = BASE_DIR / 'templates'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -26,7 +29,6 @@ SECRET_KEY = 'django-insecure-_a&5xv#^92-92@^@uh9&^39=o+86)&r$^qhv56yhm=w%2%2^yk
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -55,7 +57,9 @@ ROOT_URLCONF = 'cfehome.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            TEMPLATE_DIR,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cfehome.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -84,7 +87,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -104,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -115,7 +116,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -131,3 +131,8 @@ MEDIA_ROOT = LOCAL_CDN / 'media'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuration
+CLOUDINARY_CLOUD_NAME = config('CLOUDINARY_CLOUD_NAME', default='')
+CLOUDINARY_PUBLIC_API_KEY = config('CLOUDINARY_PUBLIC_API_KEY', default='')
+CLOUDINARY_SECRET_API_KEY = config('CLOUDINARY_SECRET_API_KEY')
